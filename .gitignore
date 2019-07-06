@@ -61,5 +61,6 @@ typings/
 .next
 
 # bitbot
+logs/*
 config.json
 !.gitkeep
