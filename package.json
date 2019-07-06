@@ -1,0 +1,24 @@
+{
+  "name": "bitbot",
+  "version": "1.0.0",
+  "description": "node de bitblyer",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ancte0721/bitbot.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ancte0721/bitbot/issues"
+  },
+  "homepage": "https://github.com/ancte0721/bitbot#readme",
+  "dependencies": {
+    "request": "^2.88.0",
+    "simple-statistics": "^7.0.2",
+    "socket.io": "^2.2.0"
+  }
+}
