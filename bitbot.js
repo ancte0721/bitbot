@@ -1,4 +1,4 @@
-// Node.js / JavaScript のサンプル
+// BitBot
 const io = require('socket.io-client');
 const sta = require("simple-statistics");
 const fs = require("fs");
@@ -6,19 +6,17 @@ const request = require('request');
 const crypto = require('crypto');
 const socket = io("https://io.lightstream.bitflyer.com", { transports: ["websocket"] });
 const channelName = "lightning_ticker_FX_BTC_JPY";
-const FILENAME = './logs/BTCFX_price.csv'
-const BUYSELLFILE = './logs/BUYSELL.csv'
 const CONFIG = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
+const FILENAME = CONFIG['PRICE-LOG']
+const BUYSELLFILE = CONFIG['ORDER-LOG']
 
 
+// ソケットで価格情報取得
 socket.on("connect", () => {
     socket.emit("subscribe", channelName);
 });
 socket.on(channelName, message => {
-    // console.log(channelName, message);
     let dd = new Date(message.timestamp);
-
-    // dd = dd.setTime(dd.getTime() + 1000*60*60*9);
     // console.log(dd.toLocaleString(), message);
     printPrice(dd.toLocaleString(), message.ltp);
 });
@@ -45,9 +43,10 @@ function printPrice (time, price) {
   appendFile(FILENAME, json.time+','+json.price+','+json.mean+','+json.min+','+json.max+','+json.sd+'\n');
   count+=1;
 
+　// 価格変動時に注文
   if(json.sd > 800 && count>30 && (count - lastBUY) > 30){
-    buyBTC(0.01, json.mean + 700, 'SELL', 'LIMIT', json);
-    buyBTC(0.01, json.mean - 700, 'BUY', 'LIMIT',json);
+    buyBTC(CONFIG['AMOUNT'], json.mean + 700, 'SELL', 'LIMIT', json);
+    buyBTC(CONFIG['AMOUNT'], json.mean - 700, 'BUY', 'LIMIT',json);
     lastBUY = count
     getMyBalance();
   }

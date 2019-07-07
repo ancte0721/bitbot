@@ -1,4 +1,7 @@
 {
-  "ACCESS-KEY": "AKEY",
-  "SECRET-KEY": "SECRETKEY",
+  "ACCESS-KEY": "your access key",
+  "SECRET-KEY": "your secret key",
+  "PRICE-LOG": "./logs/pricelog.csv",
+  "ORDER-LOG": "./logs/orderlog.csv",
+  "AMOUNT": 0.01
 }
