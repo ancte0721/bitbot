@@ -70,7 +70,7 @@ function printPrice (time, price) {
   // 証拠金記録
   if(count%900 ==0){
     getMyBalance(function(json){
-      appendFile(BUYSELLFILE, Date.now().toLocaleString()+','+json.collateral+'\n');
+      appendFile(MYBALANCEFILE, Date.now().toLocaleString()+','+json.collateral+'\n');
     });
   }
 }
