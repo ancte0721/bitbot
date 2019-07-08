@@ -3,5 +3,6 @@
   "SECRET-KEY": "your secret key",
   "PRICE-LOG": "./logs/pricelog.csv",
   "ORDER-LOG": "./logs/orderlog.csv",
+  "BALANCE-LOG": "./logs/mybalance.csv",
   "AMOUNT": 0.01
 }

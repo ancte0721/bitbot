@@ -9,6 +9,7 @@ const channelName = "lightning_ticker_FX_BTC_JPY";
 const CONFIG = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
 const FILENAME = CONFIG['PRICE-LOG']
 const BUYSELLFILE = CONFIG['ORDER-LOG']
+const MYBALANCEFILE = CONFIG['BALANCE-LOG']
 
 
 // ソケットで価格情報取得
@@ -48,7 +49,7 @@ function printPrice (time, price) {
     buyBTC(CONFIG['AMOUNT'], json.mean + 700, 'SELL', 'LIMIT', json);
     buyBTC(CONFIG['AMOUNT'], json.mean - 700, 'BUY', 'LIMIT',json);
     lastBUY = count
-    getMyBalance();
+    getMyBalance(function(e){});
   }
 
   // 損切ロジック
@@ -66,6 +67,12 @@ function printPrice (time, price) {
     });
   }
 
+  // 証拠金記録
+  if(count%900 ==0){
+    getMyBalance(function(json){
+      appendFile(BUYSELLFILE, Date.now().toLocaleString()+','+json.collateral+'\n');
+    });
+  }
 }
 
 // ファイル出力
@@ -184,7 +191,7 @@ function orderCancel(orderid) {
 }
 
 // 証拠金情報
-function getMyBalance() {
+function getMyBalance(func) {
   let timestamp = Date.now().toString();
   let method = 'GET';
   let path = '/v1/me/getcollateral';
@@ -207,6 +214,7 @@ function getMyBalance() {
   request(options, function (err, response, payload) {
       console.log(payload);
       appendFile(BUYSELLFILE, payload + '\n');
+      func(JSON.parse(payload));
   });
 }
 
