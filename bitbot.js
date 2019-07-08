@@ -4,6 +4,7 @@ const sta = require("simple-statistics");
 const fs = require("fs");
 const request = require('request');
 const crypto = require('crypto');
+const dateformat = require('dateformat');
 const socket = io("https://io.lightstream.bitflyer.com", { transports: ["websocket"] });
 const channelName = "lightning_ticker_FX_BTC_JPY";
 const CONFIG = JSON.parse(fs.readFileSync('./config.json', 'utf8'));
@@ -70,7 +71,7 @@ function printPrice (time, price) {
   // 証拠金記録
   if(count%900 ==0){
     getMyBalance(function(json){
-      appendFile(MYBALANCEFILE, Date.now().toLocaleString()+','+json.collateral+'\n');
+      appendFile(MYBALANCEFILE, dateformat(new Date(), 'yyyy/mm/dd HH:MM:ss')+','+json.collateral+'\n');
     });
   }
 }
